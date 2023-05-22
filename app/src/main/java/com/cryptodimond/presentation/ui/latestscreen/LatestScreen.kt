@@ -26,6 +26,7 @@ fun LatestScreen() {
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
+
     }
 }
 
