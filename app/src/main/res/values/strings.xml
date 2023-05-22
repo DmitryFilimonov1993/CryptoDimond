@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">CryptoDimond</string>
+    <string name="latest_tab_name">Latest</string>
+    <string name="categories_tab_name">Categories</string>
+    <string name="exchanges_tab_name">Exchanges</string>
+    <string name="about_tab_name">About</string>
+    <string name="latest_route_name">latest_route</string>
+    <string name="categories_route_name">categories_route</string>
+    <string name="exchanges_route_name">exchanges_route</string>
+    <string name="about_route_name">about_route</string>
 </resources>
