@@ -3,7 +3,7 @@ package com.cryptodimond.data.remote
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-const val prefix = "https://pro-api.coinmarketcap.com"
+const val BASE_URL = "https://pro-api.coinmarketcap.com"
 
 interface CryptoApi {
 
@@ -20,4 +20,6 @@ interface CryptoApi {
         @Query("id") id: String
     )
 
+    @GET("/v1/key/info")
+    suspend fun getApyKeyInfo(): ApiUsageInfoDTO
 }
