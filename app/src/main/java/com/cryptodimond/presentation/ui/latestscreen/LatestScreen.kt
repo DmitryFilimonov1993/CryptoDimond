@@ -1,7 +1,10 @@
 package com.cryptodimond.presentation.ui.latestscreen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -28,6 +31,33 @@ fun LatestScreen() {
         )
 
     }
+}
+
+@Composable
+private fun SearchFieldContent(){
+
+}
+
+@Composable
+private fun HeaderListItems(){
+
+}
+
+@Composable
+private fun ColumnCoinItems(){
+
+}
+@Composable
+private fun SingleRowItem() {
+//    Row {
+//       Image(painter = , contentDescription = )
+//        Column {
+//            Text(text = )
+//            Text(text = )
+//        }
+//        Text(text = )
+//
+//    }
 }
 
 @Composable
