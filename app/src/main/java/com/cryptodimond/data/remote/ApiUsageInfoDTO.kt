@@ -2,11 +2,37 @@ package com.cryptodimond.data.remote
 
 import com.squareup.moshi.Json
 
+
+data class ApiUsageInfoDTOCommon(
+    @field:Json(name = "data")
+    val data: ApiUsageInfoDTO,
+    @field:Json(name = "status")
+    val status: ApiStatusInfoDTO
+) {
+}
+
+
 data class ApiUsageInfoDTO(
     @field:Json(name = "plan")
     val planUsage: CurrentApiPlanUsageDTO,
     @field:Json(name = "usage")
     val currentUsage: CurrentApiUsageDTO
+) {
+}
+
+data class ApiStatusInfoDTO(
+    @field:Json(name = "timestamp")
+    val timestamp: String,
+    @field:Json(name = "error_code")
+    val errorCode: Int,
+    @field:Json(name = "error_message")
+    val errorMessage: String,
+    @field:Json(name = "elapsed")
+    val elapsed: Int,
+    @field:Json(name = "credit_count")
+    val creditCount: Int,
+    @field:Json(name = "notice")
+    val notice: String
 ) {
 }
 

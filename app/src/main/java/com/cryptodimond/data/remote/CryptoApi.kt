@@ -21,5 +21,5 @@ interface CryptoApi {
     )
 
     @GET("/v1/key/info")
-    suspend fun getApyKeyInfo(): ApiUsageInfoDTO
+    suspend fun getApyKeyInfo(): ApiUsageInfoDTOCommon
 }

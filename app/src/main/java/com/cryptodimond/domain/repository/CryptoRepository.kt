@@ -20,7 +20,7 @@ class CryptoRepository @Inject constructor(
     override suspend fun getApiUsageInfo(): Resource<ApiUsageInfo> {
         return try {
             Resource.Success(
-                data = api.getApyKeyInfo().toApiUsageInfo()
+                data = api.getApyKeyInfo().data.toApiUsageInfo()
             )
         } catch (e: Exception) {
             e.printStackTrace()

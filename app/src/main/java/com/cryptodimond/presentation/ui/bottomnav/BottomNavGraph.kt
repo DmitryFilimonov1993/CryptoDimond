@@ -2,9 +2,11 @@ package com.cryptodimond.presentation.ui.bottomnav
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.cryptodimond.presentation.ui.aboutscreen.AboutApiUsageViewModel
 import com.cryptodimond.presentation.ui.aboutscreen.AboutScreen
 import com.cryptodimond.presentation.ui.bottomnav.BottomNavItem.AboutTab
 import com.cryptodimond.presentation.ui.bottomnav.BottomNavItem.CategoriesTab
@@ -27,7 +29,8 @@ fun BottomNavGraph(navController: NavHostController) {
             CategoriesScreen()
         }
         composable(route = AboutTab.route) {
-            AboutScreen()
+            val viewModel = hiltViewModel<AboutApiUsageViewModel>()
+            AboutScreen(viewModel)
         }
         composable(route = ExchangeTab.route) {
             ExchangesScreen()
