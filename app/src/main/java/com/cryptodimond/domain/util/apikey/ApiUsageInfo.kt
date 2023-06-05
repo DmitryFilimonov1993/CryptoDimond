@@ -6,4 +6,5 @@ data class ApiUsageInfo(
     val creditDailyLeft: Int,
     val creditMonthlyUsed: Int,
     val creditMonthlyLeft: Int,
+    val creditMonthlyReset: String,
 )

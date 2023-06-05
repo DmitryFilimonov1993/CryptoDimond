@@ -9,6 +9,7 @@ fun ApiUsageInfoDTO.toApiUsageInfo(): ApiUsageInfo {
         creditDailyUsed = currentUsage.currentDay.creditsUsed,
         creditDailyLeft = currentUsage.currentDay.creditsLeft,
         creditMonthlyUsed = currentUsage.currentMonth.creditsUsed,
-        creditMonthlyLeft = currentUsage.currentMonth.creditsLeft
+        creditMonthlyLeft = currentUsage.currentMonth.creditsLeft,
+        creditMonthlyReset = planUsage.creditLimitMonthlyReset
     )
 }

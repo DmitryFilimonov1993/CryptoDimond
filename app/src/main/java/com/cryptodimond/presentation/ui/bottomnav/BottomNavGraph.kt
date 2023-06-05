@@ -29,8 +29,8 @@ fun BottomNavGraph(navController: NavHostController) {
             CategoriesScreen()
         }
         composable(route = AboutTab.route) {
-            val viewModel = hiltViewModel<AboutApiUsageViewModel>()
-            AboutScreen(viewModel)
+            //val viewModel = hiltViewModel<AboutApiUsageViewModel>()
+            AboutScreen()
         }
         composable(route = ExchangeTab.route) {
             ExchangesScreen()

@@ -21,9 +21,9 @@ class AboutApiUsageViewModel @Inject constructor(
         get() = reducer.state
 
     init {
-
         loadApiUsageInfo()
     }
+
     val timeMachine: TimeCapsule<AboutApiUsageState>
         get() = reducer.timeCapsule
 
@@ -31,7 +31,7 @@ class AboutApiUsageViewModel @Inject constructor(
         reducer.sendEvent(event)
     }
 
-    fun loadApiUsageInfo() {
+    private fun loadApiUsageInfo() {
         viewModelScope.launch {
             sendEvent(AboutApiUsageUiEvent.LoadData)
             when(val result = repository.getApiUsageInfo()){

@@ -4,10 +4,10 @@ import com.cryptodimond.base.Reducer
 
 internal class AboutApiUsageReducer(
     initial: AboutApiUsageState
-) :Reducer<AboutApiUsageState, AboutApiUsageUiEvent>(initial) {
+) : Reducer<AboutApiUsageState, AboutApiUsageUiEvent>(initial) {
 
     override fun reduce(oldState: AboutApiUsageState, event: AboutApiUsageUiEvent) {
-        when(event) {
+        when (event) {
             is AboutApiUsageUiEvent.LoadData -> setState(
                 oldState.copy(isLoading = true)
             )

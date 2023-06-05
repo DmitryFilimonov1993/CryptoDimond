@@ -7,7 +7,7 @@ data class ApiUsageInfoDTOCommon(
     @field:Json(name = "data")
     val data: ApiUsageInfoDTO,
     @field:Json(name = "status")
-    val status: ApiStatusInfoDTO
+    val status: StatusRequestDTO
 ) {
 }
 
@@ -20,7 +20,7 @@ data class ApiUsageInfoDTO(
 ) {
 }
 
-data class ApiStatusInfoDTO(
+data class StatusRequestDTO(
     @field:Json(name = "timestamp")
     val timestamp: String,
     @field:Json(name = "error_code")
