@@ -20,7 +20,7 @@ import com.cryptodimond.presentation.ui.latestscreen.LatestScreen
 fun BottomNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = LatestTab.route
+        startDestination = CategoriesTab.route
     ) {
         composable(route = LatestTab.route) {
             LatestScreen()

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cryptodimond.domain.util.apikey.ApiUsageInfo
 import com.cryptodimond.presentation.ui.ContentWithProgress
+import com.cryptodimond.presentation.ui.ErrorShow
 
 @Composable
 fun AboutScreen() {
@@ -33,24 +34,6 @@ fun AboutScreen() {
         state.isLoading -> ContentWithProgress()
         state.error != null -> ErrorShow(text = state.error.orEmpty())
         state.apiUsageInfo != null -> TextFunView(state.apiUsageInfo!!)
-    }
-}
-
-@Composable
-private fun ErrorShow(text: String)
-{
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
-        contentAlignment = Alignment.Center
-    ) {
-         Text(
-                text = text,
-                fontSize = MaterialTheme.typography.h3.fontSize,
-                fontWeight = FontWeight.Bold,
-                color = Color.Red
-            )
     }
 }
 

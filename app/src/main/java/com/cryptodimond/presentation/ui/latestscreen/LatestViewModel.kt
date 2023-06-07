@@ -1,14 +1,18 @@
 package com.cryptodimond.presentation.ui.latestscreen
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.cryptodimond.base.BaseViewModel
 import com.cryptodimond.domain.repository.ICryptoRepository
-import com.cryptodimond.domain.util.Resource
+import com.cryptodimond.domain.util.coin.CoinInfo
+import com.cryptodimond.presentation.ui.pagging.LatestCoinPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LatestViewModel @Inject constructor(
@@ -20,27 +24,36 @@ class LatestViewModel @Inject constructor(
     override val state: StateFlow<LatestCoinInfoState>
         get() = reducer.state
 
+    val rec: Flow<PagingData<CoinInfo>> = Pager(
+        pagingSourceFactory = { LatestCoinPagingSource(repository = repository) },
+        config = PagingConfig(pageSize = 200)
+    ).flow.cachedIn(viewModelScope)
+
     init {
-        loadCoinInfo()
+        //loadCoinInfo()
     }
 
+    fun load() {
+        //loadCoinInfo()
+    }
     private fun sendEvent(event: LatestCoinInfoUiEvent) {
         reducer.sendEvent(event)
     }
 
-    private fun loadCoinInfo() {
-        viewModelScope.launch {
-            sendEvent(LatestCoinInfoUiEvent.LoadData)
-            when(val result = repository.getLatestCoinInfo()){
-                is Resource.Success -> {
-                    sendEvent(LatestCoinInfoUiEvent.ShowData(result.data!!))
-                }
-
-                is Resource.Error -> {
-                    sendEvent(LatestCoinInfoUiEvent.ShowError(result.message!!))
-                }
-            }
-        }
-    }
+//    private fun loadCoinInfo() {
+//        viewModelScope.launch {
+//            sendEvent(LatestCoinInfoUiEvent.LoadData)
+//            when(val result = repository.getLatestCoinInfo()){
+//                is Resource.Success -> {
+//                    sendEvent(LatestCoinInfoUiEvent.ShowData(result.data!!))
+//
+//                }
+//
+//                is Resource.Error -> {
+//                    sendEvent(LatestCoinInfoUiEvent.ShowError(result.message!!))
+//                }
+//            }
+//        }
+//    }
 
 }

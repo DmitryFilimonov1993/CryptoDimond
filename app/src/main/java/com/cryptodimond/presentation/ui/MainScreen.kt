@@ -42,8 +42,8 @@ fun MainScreen() {
 fun BottomBar(navHostController: NavHostController) {
     val screens = listOf(
         BottomNavItem.LatestTab,
-        BottomNavItem.ExchangeTab,
         BottomNavItem.CategoriesTab,
+        BottomNavItem.ExchangeTab,
         BottomNavItem.AboutTab,
     )
 
