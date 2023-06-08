@@ -15,6 +15,7 @@
     <string name="credit_left">Credits left:   %d</string>
     <string name="credit_limit_monthly_reset">Credit limit monthly reset:  %s</string>
     <string name="market_cap">Market cap</string>
+    <string name="market_cap_with_arg">Market cap: $ %s</string>
     <string name="price_usd">Price, USD</string>
     <string name="value_24h_label">24h %</string>
 

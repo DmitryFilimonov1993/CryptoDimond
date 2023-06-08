@@ -3,22 +3,23 @@ package com.cryptodimond.presentation.ui.pagging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.cryptodimond.domain.repository.ICryptoRepository
+import com.cryptodimond.domain.util.coin.CoinDetailsInfo
 import com.cryptodimond.domain.util.coin.CoinInfo
 
 class LatestCoinPagingSource(
     private val repository: ICryptoRepository
-) : PagingSource<Int, CoinInfo>() {
+) : PagingSource<Int, CoinDetailsInfo>() {
 
-    override fun getRefreshKey(state: PagingState<Int, CoinInfo>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, CoinDetailsInfo>): Int? {
         return state.anchorPosition
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CoinInfo> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CoinDetailsInfo> {
         return try {
             val page = params.key ?: 1
             val size = params.loadSize
             val from = page * size
-            val coinInfoList = repository.getLatestCoinInfo(from = from, to = size).data
+            val coinInfoList = repository.getCoinMetadataList(from = from, to = size).data
 
             LoadResult.Page(
                 data = coinInfoList!!,

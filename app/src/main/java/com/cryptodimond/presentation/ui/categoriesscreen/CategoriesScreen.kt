@@ -137,21 +137,3 @@ private fun CategoriesItemView(category: CoinCategory, onClick: (msg: String) ->
         }
     }
 }
-
-@Composable
-@Preview
-fun CategoriesScreenPreview() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Blue),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "CategoriesScreen",
-            fontSize = MaterialTheme.typography.h3.fontSize,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
-    }
-}

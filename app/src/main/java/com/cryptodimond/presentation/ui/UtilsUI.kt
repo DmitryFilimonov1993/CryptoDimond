@@ -1,12 +1,16 @@
 package com.cryptodimond.presentation.ui
 
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -22,17 +26,30 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import com.cryptodimond.R.color
+import com.cryptodimond.R.mipmap
+import com.cryptodimond.presentation.ui.theme.commonTextStyle
+import com.cryptodimond.presentation.ui.theme.headerTextBold
+import kotlin.math.absoluteValue
 
 @Composable
 fun ContentWithProgress() {
-    Surface(color = Color.Transparent) {
+    Surface(color = Color.Black.copy(alpha = 0.5f)) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
@@ -41,6 +58,50 @@ fun ContentWithProgress() {
         }
     }
 }
+
+@Composable
+fun DynamicLabelView(
+    value: Double,
+    postfix: String = EMPTY_STRING,
+    prefix: String = EMPTY_STRING
+) {
+    val isGrowing = value > 0
+    val text = prefix + EMPTY_STRING_WITH_SHIFT + value.absoluteValue.toString() + EMPTY_STRING_WITH_SHIFT + postfix
+    val backgroundColor =
+        Color(ContextCompat.getColor(LocalContext.current, if (isGrowing) color.green_light else color.red_light))
+    val textColor =
+        Color(ContextCompat.getColor(LocalContext.current, if (isGrowing) color.green_second else color.red))
+    val imageColor =
+        Color(ContextCompat.getColor(LocalContext.current, if (isGrowing) color.green_second else color.red))
+    val directionIcon = if (isGrowing) 180f else 0f
+    Row(
+        Modifier.background(
+            color = backgroundColor,
+            shape = RoundedCornerShape(size = 4.dp)
+        )
+    ) {
+        Spacer(modifier = Modifier.width(4.dp))
+
+        Icon(
+            bitmap = BitmapFactory
+                .decodeResource(LocalContext.current.resources, mipmap.arrow)
+                .asImageBitmap(),
+            contentDescription = "",
+            modifier = Modifier
+                .size(14.dp)
+                .align(Alignment.CenterVertically)
+                .rotate(directionIcon),
+            tint = imageColor
+        )
+        Text(
+            text = text,
+            style = MaterialTheme.typography.commonTextStyle,
+            color = textColor,
+            modifier = Modifier.padding(vertical = 2.dp, horizontal = 2.dp)
+        )
+    }
+}
+
 
 @Composable
 fun SearchView(

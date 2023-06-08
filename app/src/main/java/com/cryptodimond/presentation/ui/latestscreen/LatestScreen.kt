@@ -2,7 +2,6 @@ package com.cryptodimond.presentation.ui.latestscreen
 
 import android.graphics.BitmapFactory
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,67 +17,53 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.pullrefresh.PullRefreshState
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextAlign.Companion
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
-import androidx.paging.compose.itemsIndexed
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
+import coil.compose.AsyncImage
 import com.cryptodimond.R
-import com.cryptodimond.R.mipmap
 import com.cryptodimond.R.string
-import com.cryptodimond.domain.util.coin.CoinInfo
+import com.cryptodimond.domain.util.coin.CoinDetailsInfo
 import com.cryptodimond.presentation.ui.ContentWithProgress
+import com.cryptodimond.presentation.ui.DynamicLabelView
 import com.cryptodimond.presentation.ui.ErrorShow
 import com.cryptodimond.presentation.ui.SearchView
 import com.cryptodimond.presentation.ui.theme.commonTextStyle
 import com.cryptodimond.presentation.ui.theme.headerTextBold
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun LatestScreen() {
+fun LatestScreen(onClick: (String) -> Unit) {
 
     val viewModel = hiltViewModel<LatestViewModel>()
     val data = viewModel.rec.collectAsLazyPagingItems()
     //val state by viewModel.state.collectAsState()
     //val pullRefreshState = rememberPullRefreshState(state.isLoading, { viewModel.load() })
 
-    ContentCoinInfoView(coinInfoList = data) { viewModel.load() }
+    ContentCoinInfoView(coinInfoList = data, onClick = onClick)
 
 
     when(val state = data.loadState.prepend) {
@@ -110,17 +95,10 @@ fun LatestScreen() {
             ErrorShow(text = state.error.message?: "fail")
         }
     }
-
-//    when {
-//        state.isLoading -> ContentWithProgress()
-//        state.error != null -> ErrorShow(text = state.error.orEmpty())
-//        state.coinInfoList != null -> ContentCoinInfoView(coinInfoList = data) { viewModel.load() }
-//    }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun ContentCoinInfoView(coinInfoList: LazyPagingItems<CoinInfo>, doWork: () -> Unit) {
+private fun ContentCoinInfoView(coinInfoList: LazyPagingItems<CoinDetailsInfo>, onClick: (String) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -152,7 +130,7 @@ private fun ContentCoinInfoView(coinInfoList: LazyPagingItems<CoinInfo>, doWork:
 
             Divider(color = Color.Green, thickness = 2.dp, modifier = Modifier.fillMaxWidth())
 
-            GreetingList(coinInfoList, doWork)
+            GreetingList(coinInfoList, onClick)
         }
     }
 }
@@ -186,64 +164,37 @@ private fun SortDirectionButton(
     }
 }
 
-private fun LazyListScope.Loading(){
-    item {
-        CircularProgressIndicator(modifier = Modifier.padding(16.dp).fillMaxSize())
-    }
-}
-
-private fun LazyListScope.Error(message: String){
-
-    item {
-            Text(
-                text = message,
-                style = MaterialTheme.typography.h6,
-                color = MaterialTheme.colors.error
-            )
-    }
-}
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun GreetingList(coinInfoList: LazyPagingItems<CoinInfo>, doWork: () -> Unit) {
+private fun GreetingList(coinInfoList: LazyPagingItems<CoinDetailsInfo>, onClick: (String) -> Unit) {
     val context = LocalContext.current
     LazyColumn(modifier = Modifier
         .padding(vertical = 4.dp)
         ) {
-        itemsIndexed(
-            items = coinInfoList
-        ) {index, coinInfo  ->
+        items(
+            count = coinInfoList.itemCount,
+            key = coinInfoList.itemKey(),
+            contentType = coinInfoList.itemContentType()
+        ) { index ->
+            val item = coinInfoList[index]
             CoinInfoView(
-                coinInfo = coinInfo!!,
+                coinInfo = item!!,
                 index = index + 1
             ) {
-                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                doWork.invoke()
+                onClick.invoke(it)
             }
+            Spacer(modifier = Modifier.height(8.dp))
         }
-//        coinInfoList.apply {
-//            when {
-//                loadState.refresh is LoadState.Loading -> {
-//                    Loading()
-//                }
-//                loadState.append is LoadState.Loading -> {
-//                    Loading()
-//                }
-//                loadState.append is LoadState.Error -> {
-//                }
-//            }
-//        }
     }
 }
 
 @Composable
-private fun CoinInfoView(coinInfo: CoinInfo, index: Int, onClick: (msg: String) -> Unit) {
-
-    val msg = "${coinInfo.name} clicked"
+private fun CoinInfoView(coinInfo: CoinDetailsInfo, index: Int, onClick: (msg: String) -> Unit) {
 
     Card(
         modifier = Modifier
             .padding(vertical = 2.dp, horizontal = 12.dp)
-            .clickable { onClick(msg) }
+            .height(64.dp)
+            .clickable { onClick(coinInfo.id) }
     ) {
         Row(horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
@@ -252,24 +203,25 @@ private fun CoinInfoView(coinInfo: CoinInfo, index: Int, onClick: (msg: String) 
             verticalAlignment = CenterVertically
         ) {
             Row(
-                horizontalArrangement = Arrangement.Start
-                ,
-                verticalAlignment = CenterVertically) {
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = CenterVertically,
+                modifier = Modifier
+                    .fillMaxHeight()) {
                 Text(
                     text = index.toString(),
                     modifier = Modifier
-                        .fillMaxHeight(),
+                        .align(CenterVertically),
                     style = MaterialTheme.typography.commonTextStyle
                 )
-                Image(
-                    painter = painterResource(id = mipmap.bitcoin),
+                Spacer(modifier = Modifier.width(16.dp))
+                AsyncImage(
+                    model = coinInfo.logo,
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center,
-                    modifier = Modifier
-                        .scale(0.5f)
+                    modifier = Modifier.size(24.dp)
                 )
-
+                Spacer(modifier = Modifier.width(16.dp))
                 Column() {
                     Text(
                         text = coinInfo.name,
@@ -284,29 +236,8 @@ private fun CoinInfoView(coinInfo: CoinInfo, index: Int, onClick: (msg: String) 
                 text = coinInfo.price,
                 style = MaterialTheme.typography.commonTextStyle
             )
-            Text(
-                text = coinInfo.income + " %",
-                style = MaterialTheme.typography.commonTextStyle
-            )
+            DynamicLabelView(value = coinInfo.income, postfix = "%")
         }
     }
 
-}
-
-@Composable
-@Preview
-fun LatestScreenPreview() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Blue),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "LatestScreen",
-            fontSize = MaterialTheme.typography.h3.fontSize,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
-    }
 }

@@ -14,6 +14,13 @@ val TitleBoldTypography = Typography (
     )
 )
 
+val Typography.titleTextBold: TextStyle
+    get() = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp
+    )
+
 val Typography.headerTextBold: TextStyle
     get() = TextStyle(
         fontFamily = FontFamily.Default,
@@ -26,4 +33,18 @@ val Typography.commonTextStyle: TextStyle
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp
+    )
+
+val Typography.smallTextMedium: TextStyle
+    get() = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp
+    )
+
+val Typography.smallTextBold: TextStyle
+    get() = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp
     )

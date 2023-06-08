@@ -11,11 +11,17 @@ interface CryptoApi {
         @Query("limit") to: Int
     ): CryptoCoinDTO
 
+    @GET("/v2/cryptocurrency/quotes/latest")
+    suspend fun getCoinDetails(@Query("id") id: String): CryptoCoinQuotesDTO
+
     @GET("/v1/cryptocurrency/categories")
     suspend fun getCoinCategories(): CategoriesCoinDTO
 
     @GET("/v1/exchange/info")
     suspend fun getExchangesListBy(@Query("id") ids: String): CoinExchangesInfoDTO
+
+    @GET("/v2/cryptocurrency/info")
+    suspend fun getCoinDetailsInfo(@Query("id") ids: String): CryptoCoinDetailsDTO
 
     @GET("/v1/exchange/map")
     suspend fun getExchangesInfo(): ExchangesInfoDTO
@@ -23,7 +29,7 @@ interface CryptoApi {
     @GET("/v2/cryptocurrency/info")
     suspend fun getCoinInfo(
         @Query("id") id: String
-    )
+    ): CryptoCoinDetailsDTO
 
     @GET("/v2/cryptocurrency/info")
     suspend fun getCryptoInfo()

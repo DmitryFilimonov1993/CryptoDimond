@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.cryptodimond.base.BaseViewModel
 import com.cryptodimond.domain.repository.ICryptoRepository
+import com.cryptodimond.domain.util.coin.CoinDetailsInfo
 import com.cryptodimond.domain.util.coin.CoinInfo
 import com.cryptodimond.presentation.ui.pagging.LatestCoinPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,11 +25,12 @@ class LatestViewModel @Inject constructor(
     override val state: StateFlow<LatestCoinInfoState>
         get() = reducer.state
 
-    val rec: Flow<PagingData<CoinInfo>> = Pager(
+    val rec: Flow<PagingData<CoinDetailsInfo>> = Pager(
         pagingSourceFactory = { LatestCoinPagingSource(repository = repository) },
-        config = PagingConfig(pageSize = 200)
+        config = PagingConfig(pageSize = 80)
     ).flow.cachedIn(viewModelScope)
 
+    //val selectorState: StateFlow<>
     init {
         //loadCoinInfo()
     }
