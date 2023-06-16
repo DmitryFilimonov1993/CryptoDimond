@@ -198,7 +198,7 @@ private fun CoinInfoView(coinInfo: CoinDetailsInfo, index: Int, onClick: (msg: S
     ) {
         Row(horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(start = 10.dp, end = 38.dp)
+                .padding(start = 10.dp, end = 18.dp)
                 .fillMaxWidth(),
             verticalAlignment = CenterVertically
         ) {

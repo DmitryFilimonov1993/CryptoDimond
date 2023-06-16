@@ -1,6 +1,8 @@
 package com.cryptodimond.data.mappers
 
+import com.cryptodimond.data.remote.CategoryDetailsDTO
 import com.cryptodimond.data.remote.CoinCategoryDTO
+import com.cryptodimond.domain.util.categories.CategoryDetails
 import com.cryptodimond.domain.util.categories.CoinCategory
 import com.cryptodimond.presentation.ui.abbreviate
 import com.cryptodimond.presentation.ui.roundTo
@@ -16,4 +18,12 @@ fun List<CoinCategoryDTO>.toCoinCategory(): List<CoinCategory> {
             volumeChange = it.volumeChange?.abbreviate().orEmpty(),
         )
     }
+}
+
+fun CategoryDetailsDTO.toListIndex(): List<Int> {
+    return data?.coins?.map { it?.id ?: 0} ?: emptyList()
+}
+
+fun CategoryDetailsDTO.toCategoryDetails(): CategoryDetails {
+
 }

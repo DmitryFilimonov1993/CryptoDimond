@@ -13,8 +13,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class ExchangesInfoViewModel @Inject constructor(
-    private val repository: ICryptoRepository
+class ExchangesTopListViewModel @Inject constructor(
+    private val repository: ICryptoRepository,
+    savedStateHandle: SavedStateHandle
 ): BaseViewModel<ExchangesInfoState, ExchangesInfoUiEvent>() {
 
     private val reducer = ExchangesInfoReducer(ExchangesInfoState.init())
@@ -22,21 +23,23 @@ class ExchangesInfoViewModel @Inject constructor(
     override val state: StateFlow<ExchangesInfoState>
         get() = reducer.state
 
+    val retriveID = savedStateHandle.get<String>(DestinationExchangesTopListArg).orEmpty()
+
     init {
-        loadCoinInfo()
+        loadCoinInfo(retriveID)
     }
 
     fun load() {
-        loadCoinInfo()
+        loadCoinInfo(retriveID)
     }
     private fun sendEvent(event: ExchangesInfoUiEvent) {
         reducer.sendEvent(event)
     }
 
-    private fun loadCoinInfo() {
+    private fun loadCoinInfo(id: String) {
         viewModelScope.launch {
             sendEvent(ExchangesInfoUiEvent.LoadData)
-            when(val result = repository.getExchangesList()){
+            when(val result = repository.getExchangesTopList(id)){
                 is Resource.Success -> {
                     sendEvent(ExchangesInfoUiEvent.ShowData(result.data!!))
                 }
