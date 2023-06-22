@@ -1,6 +1,7 @@
 package com.cryptodimond.domain.repository
 
 import com.cryptodimond.data.mappers.toApiUsageInfo
+import com.cryptodimond.data.mappers.toCategoryDetails
 import com.cryptodimond.data.mappers.toCoinCategory
 import com.cryptodimond.data.mappers.toCoinDetailsInfo
 import com.cryptodimond.data.mappers.toCoinDetailsInfoList
@@ -145,7 +146,7 @@ class CryptoRepository @Inject constructor(
             val listIds = result.toListIndex().joinToString(",")
 
             Resource.Success(
-                data = api.getLatestCoinsList(listIds).toCategoryDetails()
+                data = api.getLatestCoinsList(listIds).toCategoryDetails(result)
             )
 
         } catch (e: Exception) {
