@@ -25,5 +25,11 @@ fun CategoryDetailsDTO.toListIndex(): List<Int> {
 }
 
 fun CryptoCoinDTO.toCategoryDetails(dto: CategoryDetailsDTO): CategoryDetails {
-
+        return CategoryDetails(
+            coins = emptyList(),
+            description = "",
+            volume = "",
+            income = "",
+            title = "",
+        )
 }

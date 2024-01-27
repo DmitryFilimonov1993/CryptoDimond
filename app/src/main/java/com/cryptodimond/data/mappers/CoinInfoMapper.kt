@@ -71,23 +71,23 @@ fun CryptoCoinDetailsDTO.toCoinDetailsInfo(coinInfo: CoinInfo): CoinDetailsInfo 
         )
     }
 }
-
-fun CryptoCoinDetailsDTO.toCategoryDetailsInfo(details: CategoryDetailsDTO): CategoryDetails {
-    return with(this.data.values.first()) {
-        CategoryDetails(
-            coins = this.
 //
-//            id = id.toString(),
-//            name = name.orEmpty(),
-//            cap = coinInfo.cap,
-//            price = coinInfo.price,
-//            income = coinInfo.income,
-//            symbol = symbol.orEmpty(),
-//            dataLaunched = dateLaunched?.parseToDateString().orEmpty(),
-//            logo = logo.orEmpty(),
-//            description = description.orEmpty()
-        )
-    }
-}
+//fun CryptoCoinDetailsDTO.toCategoryDetailsInfo(details: CategoryDetailsDTO): CategoryDetails {
+//    return with(this.data.values.first()) {
+//        CategoryDetails(
+//            coins = t
+////
+////            id = id.toString(),
+////            name = name.orEmpty(),
+////            cap = coinInfo.cap,
+////            price = coinInfo.price,
+////            income = coinInfo.income,
+////            symbol = symbol.orEmpty(),
+////            dataLaunched = dateLaunched?.parseToDateString().orEmpty(),
+////            logo = logo.orEmpty(),
+////            description = description.orEmpty()
+//        )
+//    }
+//}
 
 fun List<CoinDTOInfo>.toListIds() = map { it.id ?: 0 }

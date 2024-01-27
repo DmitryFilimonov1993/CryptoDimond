@@ -114,9 +114,7 @@ private fun ContentCoinInfoView(coinInfoList: LazyPagingItems<CoinDetailsInfo>, 
                     hint = "Search for tokens...",
                     state = textState
                 )
-
                 Spacer(modifier = Modifier.height(24.dp))
-
                 Row (horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -166,10 +164,10 @@ private fun SortDirectionButton(
 
 @Composable
 private fun GreetingList(coinInfoList: LazyPagingItems<CoinDetailsInfo>, onClick: (String) -> Unit) {
-    val context = LocalContext.current
-    LazyColumn(modifier = Modifier
-        .padding(vertical = 4.dp)
-        ) {
+    LazyColumn(
+        modifier = Modifier
+            .padding(vertical = 4.dp)
+    ) {
         items(
             count = coinInfoList.itemCount,
             key = coinInfoList.itemKey(),
@@ -239,5 +237,4 @@ private fun CoinInfoView(coinInfo: CoinDetailsInfo, index: Int, onClick: (msg: S
             DynamicLabelView(value = coinInfo.income, postfix = "%")
         }
     }
-
 }

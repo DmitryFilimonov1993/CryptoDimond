@@ -135,7 +135,7 @@ fun SearchView(
                 IconButton(
                     onClick = {
                         state.value =
-                            TextFieldValue("") // Remove text from TextField when you press the 'X' icon
+                            TextFieldValue("")
                     }
                 ) {
                     Icon(
@@ -149,7 +149,7 @@ fun SearchView(
             }
         },
         singleLine = true,
-        shape = RoundedCornerShape(24.dp), // The TextFiled has rounded corners top left and right by default
+        shape = RoundedCornerShape(24.dp),
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color.Green,
             cursorColor = Color.Black,
