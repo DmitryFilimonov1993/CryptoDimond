@@ -1,7 +1,7 @@
 package com.cryptodimond.presentation.ui.aboutscreen
 
 import com.cryptodimond.base.UiEventMVI
-import com.cryptodimond.domain.util.apikey.ApiUsageInfo
+import com.cryptodimond.domain.model.apikey.ApiUsageInfo
 
 sealed class AboutApiUsageUiEvent : UiEventMVI {
 

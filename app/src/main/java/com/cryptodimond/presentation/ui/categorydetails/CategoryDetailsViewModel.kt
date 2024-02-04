@@ -5,8 +5,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.cryptodimond.base.BaseViewModel
 import com.cryptodimond.domain.repository.ICryptoRepository
-import com.cryptodimond.domain.util.Resource
-import com.cryptodimond.presentation.ui.bottomnav.DestinationExchangesDetailsArg
+import com.cryptodimond.domain.model.Resource
+import com.cryptodimond.presentation.ui.bottomnav.DestinationCategoryDetailsListArg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
@@ -24,14 +24,14 @@ class CategoryDetailsViewModel @Inject constructor(
         get() = reducer.state
 
 
-    val retriveID = savedStateHandle.get<String>(DestinationExchangesDetailsArg).orEmpty()
+    val retriveID = savedStateHandle.get<String>(DestinationCategoryDetailsListArg).orEmpty()
 
     init {
-        Log.i("TEEEEEST", "coin id = $retriveID")
-        loadCoinInfo(retriveID)
+        Log.i("TEEEEEST", "category id = $retriveID")
+        loadCategoryDetails(retriveID)
     }
     fun load(id: String) {
-        loadCoinInfo(retriveID)
+        loadCategoryDetails(retriveID)
     }
 
 //    fun loadEvent(id: String){
@@ -42,10 +42,10 @@ class CategoryDetailsViewModel @Inject constructor(
         reducer.sendEvent(event)
     }
 
-    private fun loadCoinInfo(id: String) {
+    private fun loadCategoryDetails(id: String) {
         viewModelScope.launch {
             sendEvent(CategoryDetailsUiEvent.LoadData)
-            when (val result = repository.getExchangesDetails(id)) {
+            when (val result = repository.getCoinCategoryDetails(id)) {
                 is Resource.Success -> {
                     sendEvent(CategoryDetailsUiEvent.ShowData(result.data!!))
                 }

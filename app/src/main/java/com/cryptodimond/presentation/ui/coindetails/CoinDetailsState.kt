@@ -1,8 +1,7 @@
 package com.cryptodimond.presentation.ui.coindetails
 
 import com.cryptodimond.base.UiStateMVI
-import com.cryptodimond.domain.util.coin.CoinDetailsInfo
-import com.cryptodimond.domain.util.coin.CoinInfo
+import com.cryptodimond.domain.model.coin.CoinDetailsInfo
 import javax.annotation.concurrent.Immutable
 
 @Immutable

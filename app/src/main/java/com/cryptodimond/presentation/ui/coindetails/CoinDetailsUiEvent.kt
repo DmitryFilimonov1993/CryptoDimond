@@ -1,8 +1,7 @@
 package com.cryptodimond.presentation.ui.coindetails
 
 import com.cryptodimond.base.UiEventMVI
-import com.cryptodimond.domain.util.coin.CoinDetailsInfo
-import com.cryptodimond.domain.util.coin.CoinInfo
+import com.cryptodimond.domain.model.coin.CoinDetailsInfo
 
 sealed class CoinDetailsUiEvent : UiEventMVI {
 

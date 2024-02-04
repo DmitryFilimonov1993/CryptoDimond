@@ -1,7 +1,6 @@
 package com.cryptodimond.presentation.ui.latestscreen
 
 import android.graphics.BitmapFactory
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,23 +18,27 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,26 +50,39 @@ import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import com.cryptodimond.R
 import com.cryptodimond.R.string
-import com.cryptodimond.domain.util.coin.CoinDetailsInfo
+import com.cryptodimond.domain.model.coin.CoinDetailsInfo
 import com.cryptodimond.presentation.ui.ContentWithProgress
 import com.cryptodimond.presentation.ui.DynamicLabelView
 import com.cryptodimond.presentation.ui.ErrorShow
 import com.cryptodimond.presentation.ui.SearchView
+import com.cryptodimond.presentation.ui.latestscreen.LatestViewModel.SortingButton
+import com.cryptodimond.presentation.ui.latestscreen.LatestViewModel.SortingButton.MarketButton
+import com.cryptodimond.presentation.ui.latestscreen.LatestViewModel.SortingButton.PriceButton
+import com.cryptodimond.presentation.ui.latestscreen.LatestViewModel.SortingButton.VolumeButton
 import com.cryptodimond.presentation.ui.theme.commonTextStyle
 import com.cryptodimond.presentation.ui.theme.headerTextBold
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun LatestScreen(onClick: (String) -> Unit) {
 
     val viewModel = hiltViewModel<LatestViewModel>()
-    val data = viewModel.rec.collectAsLazyPagingItems()
+    val latestCoinData = viewModel.moviesState.collectAsLazyPagingItems()
+    val buttonState = viewModel.sortingButtonsState.collectAsState()
     //val state by viewModel.state.collectAsState()
     //val pullRefreshState = rememberPullRefreshState(state.isLoading, { viewModel.load() })
 
-    ContentCoinInfoView(coinInfoList = data, onClick = onClick)
+
+      // val a = buttonState.value
+    ContentCoinInfoView(
+        coinInfoList = latestCoinData,
+        onClick = onClick,
+        buttonState.value,
+        viewModel
+    )
 
 
-    when(val state = data.loadState.prepend) {
+    when(val state = latestCoinData.loadState.prepend) {
         is LoadState.NotLoading -> Unit
         is LoadState.Loading -> {
             ContentWithProgress()
@@ -76,7 +92,7 @@ fun LatestScreen(onClick: (String) -> Unit) {
         }
     }
 
-    when(val state = data.loadState.refresh) {
+    when(val state = latestCoinData.loadState.refresh) {
         is LoadState.NotLoading -> Unit
         is LoadState.Loading -> {
             ContentWithProgress()
@@ -86,7 +102,7 @@ fun LatestScreen(onClick: (String) -> Unit) {
         }
     }
 
-    when(val state = data.loadState.append) {
+    when(val state = latestCoinData.loadState.append) {
         is LoadState.NotLoading -> Unit
         is LoadState.Loading -> {
             ContentWithProgress()
@@ -97,8 +113,14 @@ fun LatestScreen(onClick: (String) -> Unit) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun ContentCoinInfoView(coinInfoList: LazyPagingItems<CoinDetailsInfo>, onClick: (String) -> Unit) {
+private fun ContentCoinInfoView(
+    coinInfoList: LazyPagingItems<CoinDetailsInfo>,
+    onClick: (String) -> Unit,
+    searchButtonsState: Triple<MarketButton, PriceButton, VolumeButton>,
+    viewModel: LatestViewModel
+    ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -112,22 +134,28 @@ private fun ContentCoinInfoView(coinInfoList: LazyPagingItems<CoinDetailsInfo>, 
                 val textState = remember { mutableStateOf(TextFieldValue("")) }
                 SearchView(
                     hint = "Search for tokens...",
-                    state = textState
+                    state = textState,
+                    keyboardController = LocalSoftwareKeyboardController.current,
+                    search = { viewModel.search(it) }
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row (horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp)){
-                    SortDirectionButton(stringResource(id = string.market_cap), true)
-                    SortDirectionButton(stringResource(id = string.price_usd))
-                    SortDirectionButton(stringResource(id = string.value_24h_label))
+                    SortDirectionButton(stringResource(id = string.market_cap), searchButtonsState.first) {
+                        viewModel.onMarketButtonClicked()
+                    }
+                    SortDirectionButton(stringResource(id = string.price_usd), searchButtonsState.second) {
+                        viewModel.onPriceButtonClicked()
+                    }
+                    SortDirectionButton(stringResource(id = string.value_24h_label), searchButtonsState.third)
+                    {
+                        viewModel.onVolumeButtonClicked()
+                    }
                 }
-
             }
-
             Divider(color = Color.Green, thickness = 2.dp, modifier = Modifier.fillMaxWidth())
-
             GreetingList(coinInfoList, onClick)
         }
     }
@@ -136,11 +164,12 @@ private fun ContentCoinInfoView(coinInfoList: LazyPagingItems<CoinDetailsInfo>, 
 @Composable
 private fun SortDirectionButton(
     text: String,
-    selected: Boolean = false,
-    click: (() -> Unit)? = null
+    sortingButton: SortingButton,
+    click: (() -> Unit)? = null,
 ){
-    IconButton(onClick = { /*TODO*/ }) {
-
+    IconButton(onClick = { click?.invoke()
+    }) {
+        val directionIcon = if (sortingButton.isDescDirection) 0f else 180f
         Row {
             Text(
                 text = text,
@@ -154,8 +183,9 @@ private fun SortDirectionButton(
                 contentDescription = "",
                 modifier = Modifier
                     .size(16.dp)
-                    .align(CenterVertically),
-                tint = if (selected) Color(ContextCompat.getColor(LocalContext.current, R.color.blue_sky))
+                    .align(CenterVertically)
+                    .rotate(directionIcon),
+                tint = if (sortingButton.isSelected) Color(ContextCompat.getColor(LocalContext.current, R.color.blue_sky))
                 else Color(ContextCompat.getColor(LocalContext.current, R.color.gray))
             )
         }
@@ -173,12 +203,11 @@ private fun GreetingList(coinInfoList: LazyPagingItems<CoinDetailsInfo>, onClick
             key = coinInfoList.itemKey(),
             contentType = coinInfoList.itemContentType()
         ) { index ->
-            val item = coinInfoList[index]
-            CoinInfoView(
-                coinInfo = item!!,
-                index = index + 1
-            ) {
-                onClick.invoke(it)
+            coinInfoList[index]?.let { coinItemInfo ->
+                CoinInfoView(
+                    coinInfo = coinItemInfo,
+                    index = index + 1
+                ) { onClick.invoke(it) }
             }
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -223,7 +252,11 @@ private fun CoinInfoView(coinInfo: CoinDetailsInfo, index: Int, onClick: (msg: S
                 Column() {
                     Text(
                         text = coinInfo.name,
-                        style = MaterialTheme.typography.commonTextStyle
+                        style = MaterialTheme.typography.commonTextStyle,
+                        modifier = Modifier
+                            .width(54.dp),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(text = coinInfo.cap,

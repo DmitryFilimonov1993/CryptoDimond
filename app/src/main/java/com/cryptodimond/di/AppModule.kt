@@ -3,8 +3,13 @@ package com.cryptodimond.di
 import android.app.Application
 import android.content.res.Resources
 import com.cryptodimond.BuildConfig
-import com.cryptodimond.R
-import com.cryptodimond.data.remote.CryptoApi
+import com.cryptodimond.base.CryptoApi
+import com.cryptodimond.data.datasource.CoinRemoteDataSource
+import com.cryptodimond.data.datasource.CoinRemoteDataSourceImpl
+import com.cryptodimond.domain.repository.ICoinRepository
+import com.cryptodimond.domain.usecase.GetLatestCoinsUseCase
+import com.cryptodimond.domain.usecase.GetSearchCoinsByNameUseCase
+import com.cryptodimond.domain.usecase.GetSortedCoinsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +19,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -58,15 +62,45 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideInterceptor(
-        resources: Resources
-    ): Interceptor {
+    fun provideInterceptor(): Interceptor {
         return Interceptor {
             val request = it.request().newBuilder()
             request.addHeader("X-CMC_PRO_API_KEY", "286177b6-0ca7-46f8-8c61-beefdc16a1aa")
             val actualRequest = request.build()
             it.proceed(actualRequest)
         }
+    }
+
+    @Singleton
+    @Provides
+    fun providesCoinRemoteDataSource(
+        api: CryptoApi
+    ): CoinRemoteDataSource {
+        return CoinRemoteDataSourceImpl(api)
+    }
+
+    @Singleton
+    @Provides
+    fun providesGetSortedCoinsUseCase(
+        coinRepository: ICoinRepository
+    ): GetSortedCoinsUseCase {
+        return GetSortedCoinsUseCase(coinRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun providesGetLatestCoinsUseCase(
+        coinRepository: ICoinRepository
+    ): GetLatestCoinsUseCase {
+        return GetLatestCoinsUseCase(coinRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun providesGetSearchCoinsByNameUseCase(
+        coinRepository: ICoinRepository
+    ): GetSearchCoinsByNameUseCase {
+        return GetSearchCoinsByNameUseCase(coinRepository)
     }
 
     @Provides

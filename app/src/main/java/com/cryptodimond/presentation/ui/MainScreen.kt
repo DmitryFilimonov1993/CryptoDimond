@@ -73,7 +73,7 @@ fun RowScope.AddItem(
 ) {
     BottomNavigationItem(
         label = {
-            Text(text = screen.title)
+            Text(text = LocalContext.current.resources.getString(screen.title))
         },
         icon = {
             Icon(
@@ -81,7 +81,8 @@ fun RowScope.AddItem(
                     .decodeResource(LocalContext.current.resources, screen.icon)
                     .asImageBitmap(),
                 contentDescription = null,
-                modifier = Modifier.size(32.dp, 32.dp)
+                modifier = Modifier
+                    .size(32.dp, 32.dp)
                     .padding(vertical = 2.dp)
             )
         },

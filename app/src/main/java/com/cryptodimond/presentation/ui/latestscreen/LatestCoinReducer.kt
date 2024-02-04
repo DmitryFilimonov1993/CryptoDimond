@@ -1,5 +1,6 @@
 package com.cryptodimond.presentation.ui.latestscreen
 
+import androidx.paging.PagingData
 import com.cryptodimond.base.Reducer
 
 internal class LatestCoinReducer(
@@ -24,7 +25,7 @@ internal class LatestCoinReducer(
 
             is LatestCoinInfoUiEvent.ShowError -> setState(
                 oldState.copy(
-                    coinInfoList = null,
+                    coinInfoList = PagingData.empty(),
                     isLoading = false,
                     error = event.error
                 )

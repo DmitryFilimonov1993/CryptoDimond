@@ -1,8 +1,7 @@
 package com.cryptodimond.presentation.ui.exchangedetails
 
 import com.cryptodimond.base.UiEventMVI
-import com.cryptodimond.domain.util.coin.CoinInfo
-import com.cryptodimond.domain.util.exchanges.ExchangesInfo
+import com.cryptodimond.domain.model.exchanges.ExchangesInfo
 
 sealed class ExchangesDetailsUiEvent : UiEventMVI {
 

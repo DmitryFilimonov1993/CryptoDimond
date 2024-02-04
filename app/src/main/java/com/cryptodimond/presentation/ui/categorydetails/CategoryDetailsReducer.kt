@@ -9,14 +9,13 @@ internal class CategoryDetailsReducer(
     override fun reduce(oldState: CategoryDetailsState, event: CategoryDetailsUiEvent) {
 
         when (event) {
-
             is CategoryDetailsUiEvent.LoadData -> setState(
                 oldState.copy(isLoading = true)
             )
 
             is CategoryDetailsUiEvent.ShowData -> setState(
                 oldState.copy(
-                    exchangeInfo = event.exchangeInfo,
+                    categoryDetails = event.categoryDetails,
                     isLoading = false,
                     error = null
                 )
@@ -24,7 +23,7 @@ internal class CategoryDetailsReducer(
 
             is CategoryDetailsUiEvent.ShowError -> setState(
                 oldState.copy(
-                    exchangeInfo = null,
+                    categoryDetails = null,
                     isLoading = false,
                     error = event.error
                 )

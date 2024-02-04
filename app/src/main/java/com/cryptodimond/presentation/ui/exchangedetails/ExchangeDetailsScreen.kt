@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.cryptodimond.R
-import com.cryptodimond.domain.util.exchanges.ExchangesInfo
+import com.cryptodimond.domain.model.exchanges.ExchangesInfo
 import com.cryptodimond.presentation.ui.ContentWithProgress
 import com.cryptodimond.presentation.ui.ErrorShow
 import com.cryptodimond.presentation.ui.theme.commonTextStyle

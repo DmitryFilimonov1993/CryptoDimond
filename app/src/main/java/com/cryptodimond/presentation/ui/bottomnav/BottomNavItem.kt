@@ -1,39 +1,34 @@
 package com.cryptodimond.presentation.ui.bottomnav
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Place
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.StringRes
 import com.cryptodimond.R as Res
 
 sealed class BottomNavItem(
-    val title: String,
+    @StringRes val title: Int,
     val icon: Int,
     val route: String
 ) {
 
     object LatestTab : BottomNavItem(
-        "Latest",
+        Res.string.latest_tab_name,
         Res.mipmap.latest,
         "latest"
     )
 
     object ExchangeTab : BottomNavItem(
-       "Exchanges",
+        Res.string.exchanges_tab_name,
         Res.mipmap.exchanges,
         "exchange"
     )
 
     object CategoriesTab : BottomNavItem(
-        "Categories",
+        Res.string.categories_tab_name,
         Res.mipmap.categories,
         "categories"
     )
 
     object AboutTab : BottomNavItem(
-        "About",
+        Res.string.about_tab_name,
         Res.mipmap.about,
         "about"
     )

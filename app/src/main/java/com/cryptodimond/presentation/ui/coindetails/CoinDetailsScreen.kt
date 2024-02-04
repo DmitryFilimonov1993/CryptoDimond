@@ -1,6 +1,5 @@
 package com.cryptodimond.presentation.ui.coindetails
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -12,13 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,7 +30,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.cryptodimond.R
-import com.cryptodimond.domain.util.coin.CoinDetailsInfo
+import com.cryptodimond.domain.model.coin.CoinDetailsInfo
 import com.cryptodimond.presentation.ui.ContentWithProgress
 import com.cryptodimond.presentation.ui.DynamicLabelView
 import com.cryptodimond.presentation.ui.ErrorShow
@@ -119,7 +116,7 @@ fun ColumnScope.HeaderCoinDetailsView(coinInfoList: CoinDetailsInfo, onClick: (S
                 text = "$" + coinInfoList.price,
                 style = MaterialTheme.typography.titleTextBold
             )
-            DynamicLabelView(value = coinInfoList.income)
+            DynamicLabelView(value = coinInfoList.income, postfix = "%")
         }
         Button(
             onClick = { onClick(coinInfoList.id) },

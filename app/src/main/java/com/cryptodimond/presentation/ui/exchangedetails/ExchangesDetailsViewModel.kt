@@ -5,8 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.cryptodimond.base.BaseViewModel
 import com.cryptodimond.domain.repository.ICryptoRepository
-import com.cryptodimond.domain.util.Resource
-import com.cryptodimond.presentation.ui.bottomnav.DestinationCoinDetailsArg
+import com.cryptodimond.domain.model.Resource
 import com.cryptodimond.presentation.ui.bottomnav.DestinationExchangesDetailsArg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

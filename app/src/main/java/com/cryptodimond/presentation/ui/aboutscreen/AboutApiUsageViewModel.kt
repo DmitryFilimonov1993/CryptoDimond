@@ -2,9 +2,8 @@ package com.cryptodimond.presentation.ui.aboutscreen
 
 import androidx.lifecycle.viewModelScope
 import com.cryptodimond.base.BaseViewModel
-import com.cryptodimond.base.TimeCapsule
 import com.cryptodimond.domain.repository.ICryptoRepository
-import com.cryptodimond.domain.util.Resource
+import com.cryptodimond.domain.model.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,9 +22,6 @@ class AboutApiUsageViewModel @Inject constructor(
     init {
         loadApiUsageInfo()
     }
-
-    val timeMachine: TimeCapsule<AboutApiUsageState>
-        get() = reducer.timeCapsule
 
     private fun sendEvent(event: AboutApiUsageUiEvent) {
         reducer.sendEvent(event)

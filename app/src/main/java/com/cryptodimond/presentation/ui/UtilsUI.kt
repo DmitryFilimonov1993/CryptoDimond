@@ -1,6 +1,7 @@
 package com.cryptodimond.presentation.ui
 
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -11,7 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -26,17 +30,17 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +48,6 @@ import androidx.core.content.ContextCompat
 import com.cryptodimond.R.color
 import com.cryptodimond.R.mipmap
 import com.cryptodimond.presentation.ui.theme.commonTextStyle
-import com.cryptodimond.presentation.ui.theme.headerTextBold
 import kotlin.math.absoluteValue
 
 @Composable
@@ -78,7 +81,7 @@ fun DynamicLabelView(
         Modifier.background(
             color = backgroundColor,
             shape = RoundedCornerShape(size = 4.dp)
-        )
+        ).wrapContentWidth()
     ) {
         Spacer(modifier = Modifier.width(4.dp))
 
@@ -88,7 +91,7 @@ fun DynamicLabelView(
                 .asImageBitmap(),
             contentDescription = "",
             modifier = Modifier
-                .size(14.dp)
+                .size(12.dp)
                 .align(Alignment.CenterVertically)
                 .rotate(directionIcon),
             tint = imageColor
@@ -103,15 +106,24 @@ fun DynamicLabelView(
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchView(
+    keyboardController: SoftwareKeyboardController? = null,
     hint: String,
-    state: MutableState<TextFieldValue>) {
+    state: MutableState<TextFieldValue>,
+    search: ((String) -> Unit)? = null) {
     TextField(
         value = state.value,
         onValueChange = { value ->
+            Log.i("TEEEEEST", "value = $value")
             state.value = value
         },
+        keyboardActions = KeyboardActions(
+            onDone = {
+                search?.invoke(state.value.text)
+                keyboardController?.hide() }
+        ),
         placeholder = {
             Text(
                 text = hint,

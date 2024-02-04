@@ -1,7 +1,7 @@
 package com.cryptodimond.presentation.ui.aboutscreen
 
 import com.cryptodimond.base.UiStateMVI
-import com.cryptodimond.domain.util.apikey.ApiUsageInfo
+import com.cryptodimond.domain.model.apikey.ApiUsageInfo
 import javax.annotation.concurrent.Immutable
 
 @Immutable

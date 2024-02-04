@@ -1,8 +1,7 @@
 package com.cryptodimond.presentation.ui.exchangesscreen
 
 import com.cryptodimond.base.UiStateMVI
-import com.cryptodimond.domain.util.coin.CoinInfo
-import com.cryptodimond.domain.util.exchanges.ExchangesInfo
+import com.cryptodimond.domain.model.exchanges.ExchangesInfo
 import javax.annotation.concurrent.Immutable
 
 @Immutable

@@ -1,8 +1,7 @@
 package com.cryptodimond.presentation.ui.categoriesscreen
 
 import com.cryptodimond.base.UiStateMVI
-import com.cryptodimond.domain.util.apikey.ApiUsageInfo
-import com.cryptodimond.domain.util.categories.CoinCategory
+import com.cryptodimond.domain.model.categories.CoinCategory
 import javax.annotation.concurrent.Immutable
 
 @Immutable

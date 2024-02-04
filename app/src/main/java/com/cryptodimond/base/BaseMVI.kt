@@ -11,24 +11,12 @@ abstract class Reducer<S : UiStateMVI, E : UiEventMVI>(initialVal: S) {
     val state: StateFlow<S>
         get() = _state
 
-    val timeCapsule: TimeCapsule<S> = TimeTravelCapsule { storedState ->
-        _state.tryEmit(storedState)
-    }
-
-    init {
-        timeCapsule.addState(initialVal)
-    }
-
     fun sendEvent(event: E) {
         reduce(_state.value, event)
     }
 
     fun setState(newState: S) {
-        val success = _state.tryEmit(newState)
-
-        if (BuildConfig.DEBUG && success) {
-            timeCapsule.addState(newState)
-        }
+        _state.tryEmit(newState)
     }
 
     abstract fun reduce(oldState: S, event: E)
